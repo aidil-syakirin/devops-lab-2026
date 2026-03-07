@@ -20,7 +20,7 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgresql+psycopg://${DB_USERNAME}:${DB_PASWORD}@db:5432/${DB_NAME}
+      DATABASE_URL: postgresql+psycopg://${DB_USERNAME}:${DB_PASSWORD}@db:5432/${DB_NAME}
     ports:
       - "5000:5000"
 

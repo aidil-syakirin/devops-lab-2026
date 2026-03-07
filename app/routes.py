@@ -18,7 +18,7 @@ def add_visit():
         data = request.get_json()
 
         name = data.get("name", "visitor")
-        ip_address = request.remote_addr
+        ip_address = request.headers.get("X-Forwarder-For",request.remote_addr)
         visit_id = str(uuid.uuid4())
 
         conn = get_db()
