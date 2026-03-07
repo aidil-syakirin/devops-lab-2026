@@ -6,9 +6,9 @@ services:
     container_name: postgres-db
     restart: always
     environment:
-      POSTGRES_USER: appuser
-      POSTGRES_PASSWORD: apppass
-      POSTGRES_DB: appdb
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -20,7 +20,7 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgresql+psycopg://appuser:apppass@db:5432/appdb
+      DATABASE_URL: postgresql+psycopg://${DB_USERNAME}:${DB_PASWORD}@db:5432/${DB_NAME}
     ports:
       - "5000:5000"
 

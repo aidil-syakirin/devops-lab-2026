@@ -1,24 +1,38 @@
 # DevOps Resume Lab
 
-Containerized Flask web app with visitor tracking.
+A containerized resume website that logs visitors into PostgreSQL.
 
-## Stack
+## Tech Stack
 
-Flask
+Python Flask
 PostgreSQL
 Docker
 SQLAlchemy
 
+## Architecture
+
+Visitor Browser
+       |
+       v
+Flask Resume Web App
+       |
+       v
+Visitor Logging API
+       |
+       v
+PostgreSQL Database
+
 ## Features
 
-Resume webpage
-Visitor logging
-API endpoint
-Docker deployment
+- Resume webpage
+- Visitor tracking API
+- Docker container deployment
+- PostgreSQL persistence
 
-## Future Work
+## Future Enhancements
 
-Prometheus monitoring
-Grafana dashboard
-CI/CD pipeline
-AWS deployment
+- Prometheus metrics
+- Grafana dashboard
+- GitHub Actions CI
+- Nginx reverse proxy
+- AWS deployment
