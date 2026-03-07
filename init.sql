@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS visits (
+    id UUID PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    ip_address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

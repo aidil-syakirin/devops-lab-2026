@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+
+# environment
+.env
+
+# docker
+*.log
+docker-data/
+
+# postgres volumes
+pgdata/
+
+# macOS
+.DS_Store
