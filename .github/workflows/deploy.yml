@@ -27,7 +27,7 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest
 
   deploy:
-    need: build
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
