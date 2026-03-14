@@ -42,15 +42,19 @@ jobs:
           ssh-add ~/.ssh/id_ed25519
           ssh-keyscan -p 2222 -H  ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts || true
 
-      - name: Test SSH connection
+      - name: Install Tailscale
         run: |
-          ssh -v -p 2222 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "echo connected"
+          curl -fsSL https://tailscale.com/install.sh | sh
 
-      - name: Deploy to server
+      - name: Connect to Tailscale
         run: |
-          ssh -p 2222 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "
-            cd ~/resume-tracker &&
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest &&
-            docker compose down &&
-            docker compose up -d
+          sudo tailscale up --authkey=${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Deploy
+        run: |
+          ssh -p 2222 ${{ secrets.SERVER_USER }}@${{secrets.SERVER_IP}} "
+          cd ~/resume-tracker &&
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest &&
+          docker compose down &&
+          docker compose up -d
           "
