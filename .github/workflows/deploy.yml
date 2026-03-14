@@ -1,4 +1,4 @@
-name: Deploy Resume App
+name: CI/CD  Resume App
 
 on:
   push:
@@ -6,21 +6,47 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout repo
         uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        run: |
+          echo "${{secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{secrets.DOCKERHUB_USERNAME}}" --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest .
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest
+
+  deploy:
+    need: build
+    runs-on: ubuntu-latest
+
+    steps:
 
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+          eval "$(ssh-agent -s)"
+          ssh-add ~.ssh/id_ed25519
+          ssh-keyscan -p 2222 -H  ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-      - name: Deploy to VM
+      - name: Deploy to server
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} \
-          "cd ~/flask-app  && ./deploy.sh"
+          ssh -p 2222 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "
+            cd ~/resume-tracker &&
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest &&
+            docker compose down &&
+            docker compose up -d
+          "
