@@ -40,7 +40,6 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_ed25519
-          ssh-keyscan -p 2222 -H  ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts || true
 
       - name: Install Tailscale
         run: |
@@ -52,7 +51,7 @@ jobs:
 
       - name: Deploy
         run: |
-          ssh -p 2222 ${{ secrets.SERVER_USER }}@${{secrets.SERVER_IP}} "
+          ssh -o StrictHostKeyChecking=no -p 2222 ${{ secrets.SERVER_USER }}@${{secrets.SERVER_IP}} "
           cd ~/resume-tracker &&
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest &&
           docker compose down &&
