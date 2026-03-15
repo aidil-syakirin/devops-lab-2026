@@ -47,9 +47,12 @@ jobs:
 
       - name: Deploy
         run: |
-          ssh -o StrictHostKeyChecking=no -p 2222 ${{ secrets.SERVER_USER }}@${{secrets.SERVER_IP}} "
-          cd ~/resume-tracker &&
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest &&
-          docker compose down &&
-          docker compose up -d
+          ssh -i ~/.ssh/id_ed25519 \
+          -o StrictHostKeyChecking=no \
+          -p 2222 \
+          ${{ secrets.SERVER_USER }}@${{secrets.SERVER_IP}} "
+           cd ~/resume-tracker &&
+           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest &&
+           docker compose down &&
+           docker compose up -d
           "
