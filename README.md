@@ -2,6 +2,8 @@
 
 [![CI/CD  Resume App](https://github.com/aidil-syakirin/devops-lab-2026/actions/workflows/deploy.yml/badge.svg)](https://github.com/aidil-syakirin/devops-lab-2026/actions/workflows/deploy.yml)
 
+[![Docker Hub](https://img.shields.io/badge/dockerhub-resume--tracker-blue?logo=docker)](https://hub.docker.com/r/sawabatik/resume-tracker/)
+
 A containerized web application that hosts my resume and logs visitor
 activity into a PostgreSQL database.
 
