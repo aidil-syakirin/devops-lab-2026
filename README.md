@@ -75,22 +75,21 @@ Networking - Tailscale
 # Repository Structure
 
 .
-├── app/
-│   ├── __init__.py      # Flask app factory
-│   ├── config.py       # Configuration & Environment variables
-│   ├── db.py           # Database connection & SQLAlchemy setup
-│   └── routes.py       # API endpoints & logic
-├── docker/
-│   └── init.sql        # Database initialization script
-├── static/
-│   └── index.html      # Frontend entry point
-├── Dockerfile          # Image build instructions
-├── README.md           # Project documentation
-├── deploy.sh           # Deployment helper script
-├── docker-compose.yml  # Multi-container orchestration
-├── requirements.txt    # Python dependencies
-└── wsgi.py             # Gunicorn/Production entry point
-
+├── Dockerfile
+├── README.md
+├── app
+│   ├── __init__.py
+│   ├── config.py
+│   ├── db.py
+│   └── routes.py
+├── deploy.sh
+├── docker
+│   └── init.sql
+├── docker-compose.yml
+├── requirements.txt
+├── static
+│   └── index.html
+└── wsgi.py
 
 ------------------------------------------------------------------------
 
