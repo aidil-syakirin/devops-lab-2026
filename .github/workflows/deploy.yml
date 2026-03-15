@@ -51,7 +51,7 @@ jobs:
           -o StrictHostKeyChecking=no \
           -p 2222 \
           ${{ secrets.SERVER_USER }}@${{secrets.SERVER_IP}} "
-           cd ~/resume-tracker &&
+           cd ~/flask-app &&
            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest &&
            docker compose down &&
            docker compose up -d
