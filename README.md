@@ -1,5 +1,7 @@
 # Resume Tracker Web App
 
+[![CI/CD  Resume App](https://github.com/aidil-syakirin/devops-lab-2026/actions/workflows/deploy.yml/badge.svg)](https://github.com/aidil-syakirin/devops-lab-2026/actions/workflows/deploy.yml)
+
 A containerized web application that hosts my resume and logs visitor
 activity into a PostgreSQL database.
 
