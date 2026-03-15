@@ -29,10 +29,34 @@ environments.
 
 High level workflow:
 
-Developer Push │ ▼ GitHub Repository │ ▼ GitHub Actions CI/CD │ ▼ Docker
-Image Build │ ▼ Docker Hub Registry │ ▼ Deployment Server (Linux VM) │ ▼
-Docker Compose │ ▼ Nginx Reverse Proxy │ ▼ Flask API │ ▼ PostgreSQL
-Database
+Developer Push 
+      │ 
+      ▼ 
+GitHub Repository 
+      │ 
+      ▼ 
+GitHub Actions CI/CD 
+      │ 
+      ▼ 
+Docker Image Build 
+      │ 
+      ▼ 
+Docker Hub Registry 
+      │ 
+      ▼ 
+Deployment Server (Linux VM) 
+      │ 
+      ▼
+Docker Compose 
+     │ 
+     ▼ 
+Nginx Reverse Proxy 
+     │ 
+     ▼ 
+  Flask API 
+     │ 
+     ▼ 
+PostgreSQL Database
 
 ------------------------------------------------------------------------
 
