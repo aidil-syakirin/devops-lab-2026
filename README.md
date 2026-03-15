@@ -68,15 +68,28 @@ Infrastructure - Docker - Docker Compose - Nginx
 
 CI/CD - GitHub Actions - Docker Hub
 
-Networking - Tailscale (secure remote connectivity)
+Networking - Tailscale 
 
 ------------------------------------------------------------------------
 
 # Repository Structure
 
-. ├── Dockerfile ├── docker-compose.yml ├── requirements.txt ├──
-init.sql ├── wsgi.py │ ├── app │ ├── **init**.py │ ├── config.py │ ├──
-db.py │ └── routes.py │ └── static └── index.html
+.
+├── Dockerfile
+├── README.md
+├── app
+│   ├── __init__.py
+│   ├── config.py
+│   ├── db.py
+│   └── routes.py
+├── deploy.sh
+├── docker
+│   └── init.sql
+├── docker-compose.yml
+├── requirements.txt
+├── static
+│   └── index.html
+└── wsgi.py
 
 ------------------------------------------------------------------------
 
