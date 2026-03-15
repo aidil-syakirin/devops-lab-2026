@@ -26,13 +26,18 @@ jobs:
          username: ${{ secrets.DOCKERHUB_USERNAME }}
          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set short commit
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
          context: .
          platforms: linux/arm64
          push: true
-         tags: ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest
+         tags: |
+           ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest
+           ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:${{ env.SHORT_SHA }}
 
   deploy:
     needs: build
