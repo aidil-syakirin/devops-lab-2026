@@ -49,10 +49,10 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
           chmod 600 key.pem
 
-      - name: Deploy to EC2
-        run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
-          cd app &&
-          docker compose pull &&
-          docker compose up -d
-          "
+      - name: Deploy via SSM
+          run: |
+            aws ssm send-command \
+            --instance-ids ${{ secrets.EC2_INSTANCE_ID }} \
+            --document-name "AWS-RunShellScript" \
+            --parameters commands="cd /home/ubuntu/app && docker compose pull && docker compose up -d" \
+            --region ${{ secrets.AWS_REGION }}
