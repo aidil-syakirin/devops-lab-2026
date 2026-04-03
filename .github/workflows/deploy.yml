@@ -44,28 +44,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      - name: Setup SSH agent
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Install Tailscale
+      - name: Setup SSH key
         run: |
-          curl -fsSL https://tailscale.com/install.sh | sh
+          echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
+          chmod 600 key.pem
 
-      - name: Connect to Tailscale
+      - name: Deploy to EC2
         run: |
-          sudo tailscale up --authkey=${{ secrets.TAILSCALE_AUTHKEY }}
-
-      - name: Deploy
-        run: |
-          ssh -i ~/.ssh/id_ed25519 \
-          -o StrictHostKeyChecking=no \
-          -p 2222 \
-          ${{ secrets.SERVER_USER }}@${{secrets.SERVER_IP}} "
-           cd ~/flask-app &&
-           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest &&
-           docker compose down &&
-           docker compose up -d
+          ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+          cd app &&
+          docker compose pull &&
+          docker compose up -d
           "
