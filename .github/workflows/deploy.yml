@@ -67,7 +67,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker-db:v1   # increment manually for schema changes
 
   deploy:
-    needs: [build-flask-ap, build-db]
+    needs: [build-flask-app, build-db]
     runs-on: ubuntu-latest
 
     name: Deploy to EC2 via SSM
