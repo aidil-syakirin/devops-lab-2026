@@ -46,3 +46,11 @@ def get_visits():
     with get_db() as conn:
         result = conn.execute(text("SELECT * FROM visits"))
         rows = [dict(row._mapping) for row in result]
+
+@app.route("/health")
+def health():
+    try:
+        db.session.execute("SELECT 1")
+        return {"status": "ok"}, 200
+    except Exception:
+        return {"status": "fail"}, 500
