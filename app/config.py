@@ -2,7 +2,7 @@ import os
 
 DB_USERNAME = os.environ.get('DB_USERNAME', 'postgres')
 DB_PASSWORD = os.environ.get('DB_PASSWORD')
-DB_NAME = os.environ.get('DB_NAME', 'dbb')
+DB_NAME = os.environ.get('DB_NAME', 'db')
 DB_HOSTNAME = os.environ.get('DB_HOSTNAME')
 
 class Config:
