@@ -64,7 +64,7 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker-db:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker-db:v1   # increment manually for schema changes
+            ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker-db:v1  
 
   deploy:
     needs: [build-flask-app, build-db]
