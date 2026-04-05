@@ -56,15 +56,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Set version
+          run: echo "VERSION=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: Deploy via SSM
         run: |
           aws ssm send-command \
             --instance-ids ${{ secrets.EC2_INSTANCE_ID }} \
             --document-name "AWS-RunShellScript" \
-            --comment "Deploy latest Docker image" \
-            --parameters commands='[
-              "cd /home/ubuntu/app",
-              "docker compose pull",
-              "docker compose up -d"
-            ]' \
-            --output text
+            --comment "Deploy Docker image with rollback" \
+            --parameters commands="[
+            \"cd /home/ubuntu/app\",
+            \".deploy.sh ${{ env.VERSION }}\"
+          ]"\
+          --output text
