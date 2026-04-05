@@ -57,7 +57,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Set version
-          run: echo "VERSION=${GITHUB_SHA::7}" >> $GITHUB_ENV
+        run: echo "VERSION=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       - name: Deploy via SSM
         run: |
