@@ -1,0 +1,7 @@
+#copy init.sql into container
+ 
+cat docker/init.sql | docker exec -i postgres-db psql -U appuser -d appdb
+
+#login/check postgres db in container
+
+docker exec -it postgres-db psql -U appuser -d appdb -c "select * from visits"
