@@ -84,5 +84,10 @@ jobs:
           response=$(curl --fail http://localhost:5000/visits)
           echo "$response"
           echo "$response" | grep -q '"name":"ci-test"'
+
+      - name: Push tested image to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:${{ env.SHORT_SHA }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest
        
       
