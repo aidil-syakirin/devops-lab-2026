@@ -64,7 +64,7 @@ jobs:
             --name resume-tracker-test \
             --network host \
             -e DATABASE_URL="postgresql+psycopg://appuser:testpassword@localhost:5432/appdb" \
-            resume-tracker:test
+            resume-tracker:${{ env.SHORT_SHA }}
 
       - name: DB endpoint health check
         run: |
