@@ -1,99 +1,58 @@
-name: CI/CD  Resume App
+name: CI  Resume App
 
 on:
   push:
     branches:
-      - main
+      - local-mini-pc
 
 jobs:
   build-flask-app:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: appuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: appdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U appuser -d appdb"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
+
     steps:
 
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with: 
-         username: ${{ secrets.DOCKERHUB_USERNAME }}
-         password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Set short commit
-        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       - name: Build and push Flask App image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
          context: .
-         platforms: linux/arm64
-         push: true
-         tags: |
-           ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:latest
-           ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:${{ env.SHORT_SHA }}
-  build-db:
-    runs-on: ubuntu-latest
-    needs: build-flask-app
+         platforms: linux/amd64
+         push: false
+         load: true
+         tags: resume-tracker:test
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build & Push Postgres DB Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile.db
-          platforms: linux/arm64
-          push: true
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker-db:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker-db:v1  
-
-  deploy:
-    needs: [build-flask-app, build-db]
-    runs-on: ubuntu-latest
-
-    name: Deploy to EC2 via SSM
-
-    steps:
-      - name: Checkout (optional)
-        uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Set version
-        run: echo "VERSION=${GITHUB_SHA::7}" >> $GITHUB_ENV
-
-      - name: Deploy via SSM
+      - name: Run Flask container
         run: |
-          aws ssm send-command \
-            --instance-ids ${{ secrets.EC2_INSTANCE_ID }} \
-            --document-name "AWS-RunShellScript" \
-            --comment "Deploy Docker image with rollback" \
-            --parameters commands="[
-            \"cd /home/ubuntu/app\",
-            \"./deploy.sh ${{ env.VERSION }}\"
-            ]" \
-            --output text
+          docker run -d \
+            --name resume-tracker-test \
+            --network host \
+            -e DATABASE_URL="postgresql+psycopg://appuser:testpassword@localhost:5432/appdb" \
+            resume-tracker:test
+
+      - name: Test health endpoint
+        run: |
+          sleep 5
+          curl --fail http://localhost:5000/health
+       
+      
