@@ -55,9 +55,23 @@ jobs:
             -e DATABASE_URL="postgresql+psycopg://appuser:testpassword@localhost:5432/appdb" \
             resume-tracker:test
 
-      - name: Test health endpoint
+      - name: DB endpoint health check
         run: |
           sleep 5
           curl --fail http://localhost:5000/health
+
+      - name: Visit data creation test
+        run: |
+          curl --fail \
+          -X POST \
+          -H "Content-Type: application/json" \
+          -d '{"name":"ci-test"}' \
+          http://localhost:5000/visit
+
+      - name: Visit data retrieval test
+        run: |
+          response=$(curl --fail http://localhost:5000/visits)
+          echo "$response"
+          echo "$response" | grep -q '"name":"ci-test"'
        
       
