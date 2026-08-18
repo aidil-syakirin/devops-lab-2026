@@ -42,7 +42,7 @@ jobs:
          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Set short commit
-        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV}
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
