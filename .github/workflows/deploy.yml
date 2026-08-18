@@ -47,7 +47,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push Flask App image
+      - name: Build Flask App image
         uses: docker/build-push-action@v7
         with:
          context: .
@@ -64,7 +64,7 @@ jobs:
             --name resume-tracker-test \
             --network host \
             -e DATABASE_URL="postgresql+psycopg://appuser:testpassword@localhost:5432/appdb" \
-            ${{ secrets.DOCKERHUB_USRENAME }}/resume-tracker:${{ env.SHORT_SHA }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:${{ env.SHORT_SHA }}
 
       - name: DB endpoint health check
         run: |
