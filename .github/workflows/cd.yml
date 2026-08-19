@@ -15,3 +15,8 @@ jobs:
           hostname
           whoami
           uname -m
+
+      - name: Verify ssh connection to the host server
+        run: |
+          ssh -i ~/.ssh/deploy_vm_resume deploy@${{ secrets.APP_VM_IP }} hostname
+          ssh -i ~/.ssh/deploy_vm_resume deploy@${{ secrets.APP_VM_IP }} docker ps
