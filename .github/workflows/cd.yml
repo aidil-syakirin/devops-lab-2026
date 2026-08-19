@@ -1,0 +1,17 @@
+name: CD Resume App
+
+on:
+  push:
+    branches:
+      - local-mini-pc
+
+jobs:
+  test-runner:
+    runs-on: self-hosted
+
+    steps:
+      - name: Verify self-hosted runner
+        run: |
+          hostname
+          whoami
+          uname -m
