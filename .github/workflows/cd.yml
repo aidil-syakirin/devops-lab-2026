@@ -38,3 +38,24 @@ jobs:
           ssh -i ~/.ssh/deploy_vm_resume \
           deploy@${{ secrets.APP_VM_IP }} \
           "docker image ls ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker"
+
+        - name: Deploy application
+          run: |
+            ssh -i ~/.ssh/deploy_vm_resume \
+            deploy@${{ secrets.APP_VM_IP }} \
+            "cd ~/devops-lab-2026/ && \
+            DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} \
+            IMAGE_TAG=${SHORT_SHA} \
+            docker compose up -d web"
+
+        - name: Verify deployment
+          run: |
+          ssh -i ~/.ssh/deploy_vm_resume \
+          deploy@${{ secrets.APP_VM_IP }} \
+          "curl --fail http://localhost:5000/health"
+
+        - name: Verify deployed image
+          run: |
+          ssh -i ~/.ssh/deploy_vm_resume \
+          deploy@${{ secrets.APP_VM_IP }} \
+          "docker inspect flask-api --format='{{.Config.Image}}'"
