@@ -43,7 +43,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_vm_resume \
           deploy@${{ secrets.APP_VM_IP }} \
-          "cd ~/devops-lab-2026/ && \
+          "cd /home/admin/devops-lab-2026/ && \
           DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} \
           IMAGE_TAG=${SHORT_SHA} \
           docker compose up -d web"
