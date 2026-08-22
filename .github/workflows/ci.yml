@@ -1,4 +1,4 @@
-name: CI  Resume App
+name: CI Resume App
 
 on:
   push:
