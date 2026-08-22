@@ -21,10 +21,7 @@ services:
       start_period: 10s
 
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: resume-tracker:local
+    image: ${DOCKERHUB_USERNAME}/resume-tracker:${IMAGE_TAG}
     container_name: flask-api
     restart: unless-stopped
     depends_on:
