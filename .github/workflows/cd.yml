@@ -11,6 +11,7 @@ on:
 
 jobs:
   connectivity-test:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: self-hosted
 
     steps:
@@ -27,16 +28,16 @@ jobs:
           ssh -i ~/.ssh/deploy_vm_resume deploy@${{ secrets.APP_VM_IP }} docker ps
   
   deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: self-hosted
 
     steps:
 
       - name: Set deployment version
         run: |
-          echo "GITHUB_SHA=$GITHUB_SHA"
-          SHORT_SHA="${GITHUB_SHA:0:7}"
-          echo "SHORT_SHA=$SHORT_SHA"
-          echo "SHORT_SHA=$SHORT_SHA" >> "$GITHUB_ENV"
+          FULL_SHA="${{ github.event.workflow_run.head_sha }}"
+          echo "SHORT_SHA=${FULL_SHA::7}" >> "$GITHUB_ENV"
+
 
       - name: Show deployment version
         run: |
