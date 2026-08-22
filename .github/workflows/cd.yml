@@ -10,23 +10,7 @@ on:
       - local-mini-pc
 
 jobs:
-  connectivity-test:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: self-hosted
-
-    steps:
-
-      - name: Verify self-hosted runner
-        run: |
-          hostname
-          whoami
-          uname -m
-
-      - name: Verify ssh connection to the host server
-        run: |
-          ssh -i ~/.ssh/deploy_vm_resume deploy@${{ secrets.APP_VM_IP }} hostname
-          ssh -i ~/.ssh/deploy_vm_resume deploy@${{ secrets.APP_VM_IP }} docker ps
-  
+    
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: self-hosted
@@ -36,8 +20,8 @@ jobs:
       - name: Set deployment version
         run: |
           FULL_SHA="${{ github.event.workflow_run.head_sha }}"
-          echo "SHORT_SHA=${FULL_SHA::7}" >> "$GITHUB_ENV"
-
+          SHORT_SHA="${FULL_SHA:0:7}"
+          echo "SHORT_SHA=$SHORT_SHA" >> "$GITHUB_ENV"
 
       - name: Show deployment version
         run: |
