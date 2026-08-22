@@ -10,7 +10,7 @@ on:
       - local-mini-pc
 
 jobs:
-  connectivity test:
+  connectivity-test:
     runs-on: self-hosted
 
     steps:
