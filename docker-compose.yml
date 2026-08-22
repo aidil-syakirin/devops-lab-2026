@@ -21,7 +21,7 @@ services:
       start_period: 10s
 
   web:
-    image: ${DOCKERHUB_USERNAME}/resume-tracker:${IMAGE_TAG}
+    image: ${APP_IMAGE}
     container_name: flask-api
     restart: unless-stopped
     depends_on:
