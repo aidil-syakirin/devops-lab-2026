@@ -1,7 +1,11 @@
 name: CD Resume App
 
 on:
-  push:
+  workflow_run:
+    workflows:
+      - "CI Resume App"
+    types:
+      - completed
     branches:
       - local-mini-pc
 
