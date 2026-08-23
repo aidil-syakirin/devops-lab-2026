@@ -81,7 +81,7 @@ jobs:
         run: |
           response=$(curl --fail http://localhost:5000/visits)
           echo "$response"
-          echo "$response" | grep -q '"name":"ci-test"'
+          echo "$response" | grep -q '"name":"this-will-not-exist"'
 
       - name: Login to Docker Hub
         if: github.event_name == 'push'
