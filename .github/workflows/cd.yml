@@ -69,13 +69,21 @@ jobs:
           deploy@${{ secrets.APP_VM_IP }} \
           "docker inspect flask-api --format='{{.Config.Image}}'"
 
+      - name: Clean unused Docker images
+        if: ${{ steps.health_check.outcome == 'success' }}
+          run:   |
+          ssh -i ~/.ssh/deploy_vm_resume \
+          deploy@${{ secrets.APP_VM_IP }} \
+          "docker image prune -a -f"
+
       - name: Roll back deployment
         if: ${{ steps.health_check.outcome == 'failure' }}
-        run: |
+          run: |
           ssh -i ~/.ssh/deploy_vm_resume \
           deploy@${{ secrets.APP_VM_IP }} \
           "cd /home/admin/devops-lab-2026 && \
           PREVIOUS_IMAGE=\$(cat .previous_image) && \
+          docker pull \$PREVIOUS_IMAGE && \
           APP_IMAGE=\$PREVIOUS_IMAGE \
           docker compose up -d web"
 
