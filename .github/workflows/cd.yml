@@ -71,14 +71,14 @@ jobs:
 
       - name: Clean unused Docker images
         if: ${{ steps.health_check.outcome == 'success' }}
-          run:   |
+        run:   |
           ssh -i ~/.ssh/deploy_vm_resume \
           deploy@${{ secrets.APP_VM_IP }} \
           "docker image prune -a -f"
 
       - name: Roll back deployment
         if: ${{ steps.health_check.outcome == 'failure' }}
-          run: |
+        run: |
           ssh -i ~/.ssh/deploy_vm_resume \
           deploy@${{ secrets.APP_VM_IP }} \
           "cd /home/admin/devops-lab-2026 && \
