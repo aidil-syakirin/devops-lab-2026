@@ -86,4 +86,11 @@ jobs:
           deploy@${{ secrets.APP_VM_IP }} \
           "curl --fail http://localhost:5000/health"
 
+      - name: Mark deployment as failed after rollback
+        if: ${{ steps.health_check.outcome == 'failure' }}
+        run: |
+          echo "Deployment health check failed."
+          echo "Rollback completed successfully."
+          exit 1
+
 
