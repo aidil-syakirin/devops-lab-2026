@@ -56,14 +56,14 @@ jobs:
 
 
       - name: Verify deployment
+        id: health_check
+        continue-on-error: true
         run: |
           ssh -i ~/.ssh/deploy_vm_resume \
           deploy@${{ secrets.APP_VM_IP }} \
           "curl --fail http://localhost:5000/health-fail-test"
 
       - name: Verify deployed image
-        id: health_check
-        continue-on-error: true
         run: |
           ssh -i ~/.ssh/deploy_vm_resume \
           deploy@${{ secrets.APP_VM_IP }} \
