@@ -12,7 +12,10 @@ on:
 jobs:
     
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: > 
+      ${{ github.event.workflow_run.conclusion == 'success'&&
+          github.event.workflow_run.event == 'push' }}
+
     runs-on: self-hosted
 
     steps:
@@ -38,3 +41,67 @@ jobs:
           ssh -i ~/.ssh/deploy_vm_resume \
           deploy@${{ secrets.APP_VM_IP }} \
           "docker image ls ${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker"
+
+      - name: Save current image
+        run: |
+          ssh -i ~/.ssh/deploy_vm_resume \
+          deploy@${{ secrets.APP_VM_IP }} \
+          "docker inspect flask-api --format='{{.Config.Image}}' \
+          > /home/admin/devops-lab-2026/.previous_image"
+
+      - name: Deploy application
+        run: |
+          ssh -i ~/.ssh/deploy_vm_resume \
+          deploy@${{ secrets.APP_VM_IP }} \
+          "cd /home/admin/devops-lab-2026/ && \
+          APP_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/resume-tracker:${SHORT_SHA} \
+          docker compose up -d web"
+
+
+      - name: Verify deployment
+        id: health_check
+        continue-on-error: true
+        run: |
+          ssh -i ~/.ssh/deploy_vm_resume \
+          deploy@${{ secrets.APP_VM_IP }} \
+          "curl --fail http://localhost:5000/health"
+
+      - name: Verify deployed image
+        run: |
+          ssh -i ~/.ssh/deploy_vm_resume \
+          deploy@${{ secrets.APP_VM_IP }} \
+          "docker inspect flask-api --format='{{.Config.Image}}'"
+
+      - name: Clean unused Docker images
+        if: ${{ steps.health_check.outcome == 'success' }}
+        run:   |
+          ssh -i ~/.ssh/deploy_vm_resume \
+          deploy@${{ secrets.APP_VM_IP }} \
+          "docker image prune -a -f"
+
+      - name: Roll back deployment
+        if: ${{ steps.health_check.outcome == 'failure' }}
+        run: |
+          ssh -i ~/.ssh/deploy_vm_resume \
+          deploy@${{ secrets.APP_VM_IP }} \
+          "cd /home/admin/devops-lab-2026 && \
+          PREVIOUS_IMAGE=\$(cat .previous_image) && \
+          docker pull \$PREVIOUS_IMAGE && \
+          APP_IMAGE=\$PREVIOUS_IMAGE \
+          docker compose up -d web"
+
+      - name: Verify rollback
+        if: ${{ steps.health_check.outcome == 'failure' }}
+        run: |
+          ssh -i ~/.ssh/deploy_vm_resume \
+          deploy@${{ secrets.APP_VM_IP }} \
+          "curl --fail http://localhost:5000/health"
+
+      - name: Mark deployment as failed after rollback
+        if: ${{ steps.health_check.outcome == 'failure' }}
+        run: |
+          echo "Deployment health check failed."
+          echo "Rollback completed successfully."
+          exit 1
+
+
