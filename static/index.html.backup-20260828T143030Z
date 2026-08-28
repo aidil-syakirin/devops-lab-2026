@@ -116,11 +116,11 @@
 <body>
     <header>
         <h1>MOHD AIDIL SYAKIRIN BIN MOHD ZULKIFLI</h1>
-        <p class="headline">IT Operations Engineer | Enterprise Infrastructure | Cloud &amp; DevOps</p>
+        <p class="headline">IT Operations Engineer | Enterprise Infrastructure | Cloud &amp; DevOps | AWS | Azure</p>
         <div class="contact">
             <span>Kuala Lumpur</span>
-            <span>+6014-XXXXXXX</span>
-            <a href="mailto:aidilsyakirin027@gmail.com">XXXXXX@gmail.com</a>
+            <span>+601X-XXXX454</span>
+            <a href="mailto:aidilsyakirin027@gmail.com">aidilsyakirin027@gmail.com</a>
             <a href="https://www.linkedin.com/in/aidilsyakirin/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             <a href="https://github.com/aidil-syakirin/" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
@@ -139,6 +139,7 @@
                 <li><strong>Operating Systems:</strong> Linux (Ubuntu, RHEL), Windows Server, IBM i (AS/400)</li>
                 <li><strong>Application &amp; Infrastructure:</strong> Apache Tomcat, WinSCP, VMware AirWatch, Veeam, Commvault</li>
                 <li><strong>Databases:</strong> PostgreSQL, Oracle Database</li>
+                <li><strong>Programming &amp; Scripting:</strong> Python, Bash, PowerShell</li>
                 <li><strong>IT Operations:</strong> ITIL, ServiceNow, Production Support, Change Management, Incident Management</li>
                 <li><strong>Enterprise Tools:</strong> Fortra HelpSystems, CA Autosys</li>
             </ul>
@@ -181,7 +182,7 @@
         <section aria-labelledby="projects-heading">
             <h2 id="projects-heading">Project</h2>
             <div class="project-heading">
-                <p class="project-title">DevOps Resume Web Application</p>
+                <p class="project-title">Resume Tracker Web Application</p>
                 <span class="date">Personal Project</span>
             </div>
             <ul>
@@ -196,9 +197,9 @@
         <section aria-labelledby="certifications-heading">
             <h2 id="certifications-heading">Certifications</h2>
             <ul>
-                <li>Microsoft Certified: Azure Administrator Associate – Expires Oct 2026</li>
-                <li>Microsoft Certified: Azure Security Engineer Associate – Expires Nov 2026</li>
-                <li>Microsoft Certified: Azure Solutions Architect Expert – Expires Dec 2026</li>
+                <li>Microsoft Certified: Azure Administrator Associate (AZ-104) – Expires Oct 2026</li>
+                <li>Microsoft Certified: Azure Security Engineer Associate (AZ-500) – Expires Nov 2026</li>
+                <li>Designing Microsoft Azure Infrastructure Solutions (AZ-305T00) – Expires Dec 2026</li>
             </ul>
         </section>
 
